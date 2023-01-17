@@ -1,0 +1,29 @@
+{
+  "name": "chain.ts",
+  "version": "0.0.0",
+  "description": "General utility modules to build your own blockchain",
+  "keywords": [
+    "blockchain",
+    "utility",
+    "DIY",
+    "p2p",
+    "network",
+    "storage",
+    "consensus",
+    "application"
+  ],
+  "author": "",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/beenotung/chain.ts.git"
+  },
+  "homepage": "https://github.com/beenotung/chain.ts#readme",
+  "bugs": {
+    "url": "https://github.com/beenotung/chain.ts/issues"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}

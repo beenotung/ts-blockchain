@@ -1,0 +1,21 @@
+block_header
+------------
+id # height
+prev_block_hash text unique
+content_hash text unique
+nonce
+timestamp
+header_hash text unique
+
+block_content
+-------------
+id # height
+hash text unique
+payload text null # txn hashes
+
+txn
+---
+id # seq
+payload text
+timestamp
+hash text unique

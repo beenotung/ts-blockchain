@@ -1,5 +1,5 @@
-import { db } from './db'
-import { proxy } from './proxy'
+import { db } from '../db'
+import { proxy } from '../proxy'
 
 export interface NewBlock {
   height: number

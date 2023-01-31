@@ -1,5 +1,5 @@
-import { encodeBlockContent, hashBlockHeader, hashTxn } from './hash'
-import { Txn } from './proxy'
+import { encodeBlockContent, hashBlockHeader, hashTxn } from '../hash'
+import { Txn } from '../proxy'
 import { IStorage, NewBlock } from './storage'
 
 export interface IConcensus {

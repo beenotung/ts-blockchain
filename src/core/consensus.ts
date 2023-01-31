@@ -1,3 +1,4 @@
+import { db } from '../db'
 import { encodeBlockContent, hashBlockHeader, hashTxn } from '../hash'
 import { Txn } from '../proxy'
 import { IApplication } from './application'
@@ -33,7 +34,7 @@ export class DummyConcensus implements IConcensus {
       timestamp,
       nonce,
     })
-    return {
+    let newBlock: NewBlock = {
       height: last.height + 1,
       header: {
         prev_block_hash: last.header_hash,
@@ -47,7 +48,13 @@ export class DummyConcensus implements IConcensus {
       },
       txns,
     }
+    return newBlock
   }
 
-  onBlock(block: NewBlock): void {}
+  onBlock = db.transaction((block: NewBlock): void => {
+    this.storage.storeBlock(block)
+    for (let txn of block.txns) {
+      this.application.onAcceptedTxn(txn)
+    }
+  })
 }

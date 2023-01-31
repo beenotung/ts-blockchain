@@ -1,5 +1,7 @@
+import { find } from 'better-sqlite3-proxy'
 import { db } from '../db'
 import { proxy } from '../proxy'
+import { CompactBlockContent, HttpError } from './network'
 
 export interface NewBlock {
   height: number
@@ -31,6 +33,8 @@ export interface IStorage {
   getLastBlockHeader(): LastBlockHeader
 
   storeBlock(block: NewBlock): void
+
+  getBlockContent(content_hash: string): CompactBlockContent
 }
 
 let select_hash_block_header = db.prepare(/* sql */ `
@@ -51,6 +55,22 @@ export class SqliteStorage implements IStorage {
     let row = select_hash_block_header.get()
     return row
   }
+
+  getBlockContent = db.transaction((hash: string): CompactBlockContent => {
+    let content = find(proxy.block_content, { hash })
+    if (!content) throw new HttpError(404, 'block content not found')
+    if (!content.payload) return { txns: [] }
+    return {
+      txns: content.payload.split(',').map(hash => {
+        let txn = find(proxy.txn, { hash })
+        if (!txn) throw new HttpError(404, 'missing txn, hash: ' + hash)
+        return {
+          payload: txn.payload,
+          timestamp: txn.timestamp,
+        }
+      }),
+    }
+  })
 
   storeBlock = db.transaction((block: NewBlock): void => {
     proxy.txn.push(...block.txns)

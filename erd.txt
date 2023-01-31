@@ -19,3 +19,10 @@ id # seq
 payload text
 timestamp
 hash text unique
+
+kv
+--
+id
+key text unique
+value text
+txn_id fk

@@ -23,10 +23,19 @@ export type Txn = {
   hash: string
 }
 
+export type Kv = {
+  id?: number | null
+  key: string
+  value: string
+  txn_id: number
+  txn?: Txn
+}
+
 export type DBProxy = {
   block_header: BlockHeader[]
   block_content: BlockContent[]
   txn: Txn[]
+  kv: Kv[]
 }
 
 export let proxy = proxySchema<DBProxy>({
@@ -35,5 +44,9 @@ export let proxy = proxySchema<DBProxy>({
     block_header: [],
     block_content: [],
     txn: [],
+    kv: [
+      /* foreign references */
+      ['txn', { field: 'txn_id', table: 'txn' }],
+    ],
   },
 })
